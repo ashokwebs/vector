@@ -65,7 +65,7 @@ export default function MemoryMatrixPage() {
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-6 flex justify-between items-end shrink-0">
         <div>
           <h2 className="text-3xl font-bold tracking-tight text-on-surface mb-1 flex items-center gap-3">
-            <Database className="w-8 h-8 text-indigo-400" />
+            <Database className="w-8 h-8 text-zinc-300 drop-shadow-[0_0_10px_rgba(212,212,216,0.3)]" />
             AICOO Memory Matrix
           </h2>
           <p className="text-sm text-on-surface-variant/70 max-w-2xl">
@@ -76,9 +76,9 @@ export default function MemoryMatrixPage() {
         <div className="relative flex items-center gap-4">
           <button 
             onClick={handleInject}
-            className="flex items-center gap-2 bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 hover:bg-indigo-500/30 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all active:scale-95"
+            className="flex items-center gap-2 bg-zinc-800/50 text-zinc-300 border border-zinc-600/30 hover:bg-zinc-700/50 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all active:scale-95 shadow-[0_0_10px_rgba(212,212,216,0.05)]"
           >
-            <Zap className="w-4 h-4" />
+            <Zap className="w-4 h-4 text-zinc-400" />
             Inject Vector
           </button>
           <div className="relative">
@@ -88,7 +88,7 @@ export default function MemoryMatrixPage() {
               placeholder="Search semantic space..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="bg-surface-container border border-outline-variant/50 rounded-lg pl-9 pr-4 py-2 text-sm focus:outline-none focus:border-indigo-500 w-64 text-on-surface transition-colors"
+              className="bg-surface-container border border-outline-variant/50 rounded-lg pl-9 pr-4 py-2 text-sm focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500/50 w-64 text-on-surface transition-colors"
             />
           </div>
         </div>
@@ -100,7 +100,7 @@ export default function MemoryMatrixPage() {
           
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="premium-card rounded-2xl p-6">
             <h3 className="text-lg font-bold text-on-surface mb-3 flex items-center gap-2">
-              <Brain className="w-5 h-5 text-indigo-400" />
+              <Brain className="w-5 h-5 text-zinc-300" />
               What is the Memory Matrix?
             </h3>
             <p className="text-sm text-on-surface-variant/80 leading-relaxed mb-4">
@@ -123,7 +123,7 @@ export default function MemoryMatrixPage() {
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-zinc-800/50 flex items-center justify-center"><Clock className="w-4 h-4 text-indigo-400" /></div>
+                  <div className="w-8 h-8 rounded-lg bg-zinc-800/50 flex items-center justify-center"><Clock className="w-4 h-4 text-zinc-400" /></div>
                   <span className="text-sm font-medium text-zinc-300">Time Saved (Recall)</span>
                 </div>
                 <span className="text-base font-bold text-white">4,200 hrs</span>
@@ -149,7 +149,7 @@ export default function MemoryMatrixPage() {
                 { time: "5 hours ago", text: "Ingested the Zero-Trust Security Policy guidelines" },
               ].map((feed, idx) => (
                 <div key={idx} className="flex gap-3 items-start">
-                  <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 mt-2 shrink-0 shadow-[0_0_5px_#818cf8]" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-zinc-400 mt-2 shrink-0 shadow-[0_0_5px_#a1a1aa]" />
                   <div>
                     <p className="text-xs text-zinc-300 leading-snug">{feed.text}</p>
                     <p className="text-[10px] text-zinc-500 font-mono mt-0.5">{feed.time}</p>
@@ -164,10 +164,10 @@ export default function MemoryMatrixPage() {
         {/* Right Column: The Matrix */}
         <div className="lg:col-span-8 bg-surface-container-lowest border border-outline-variant/30 rounded-2xl overflow-hidden relative shadow-inner p-8 flex flex-col min-h-[500px]">
         {/* Holographic grid background */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(99,102,241,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(99,102,241,0.05)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(161,161,170,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(161,161,170,0.05)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
         
         {/* Stats Bar */}
-        <div className="absolute top-4 left-4 right-4 flex justify-between items-center text-[10px] uppercase font-bold tracking-widest text-indigo-400/50 pointer-events-none">
+        <div className="absolute top-4 left-4 right-4 flex justify-between items-center text-[10px] uppercase font-bold tracking-widest text-zinc-500 pointer-events-none">
           <span>{filteredVectors.length} Vectors Loaded</span>
           <span>Dimensionality: 1536</span>
           <span>Distance Metric: Cosine</span>
@@ -191,8 +191,8 @@ export default function MemoryMatrixPage() {
                 className={`w-3 h-3 sm:w-4 sm:h-4 rounded-sm cursor-pointer transition-all duration-200 ${
                   v.topic === "LIVE INJECTION PROTOCOL" ? 'bg-emerald-400 shadow-[0_0_15px_#34d399] animate-pulse z-30' :
                   v.active 
-                    ? 'bg-indigo-400 shadow-[0_0_8px_#818cf8]' 
-                    : 'bg-zinc-800 hover:bg-indigo-500/50'
+                    ? 'bg-zinc-400 shadow-[0_0_10px_#a1a1aa]' 
+                    : 'bg-zinc-800 hover:bg-zinc-500/50'
                 } ${isHovered || isSelected ? 'ring-2 ring-white scale-150 z-20 relative shadow-[0_0_20px_rgba(255,255,255,0.5)]' : ''}`}
               />
             );
@@ -211,10 +211,10 @@ export default function MemoryMatrixPage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="absolute bottom-12 left-1/2 -translate-x-1/2 bg-surface/90 backdrop-blur-xl border border-indigo-500/30 rounded-xl p-4 shadow-2xl flex items-center gap-6 min-w-[400px] z-50 pointer-events-none"
+            className="absolute bottom-12 left-1/2 -translate-x-1/2 bg-surface/90 backdrop-blur-xl border border-zinc-500/30 rounded-xl p-4 shadow-2xl flex items-center gap-6 min-w-[400px] z-50 pointer-events-none"
           >
             <div>
-              <p className="text-[10px] text-indigo-400 uppercase font-bold tracking-wider mb-1">Vector Hash</p>
+              <p className="text-[10px] text-zinc-400 uppercase font-bold tracking-wider mb-1">Vector Hash</p>
               <p className="text-sm font-mono text-zinc-300">{hoveredVector.id}</p>
             </div>
             <div className="w-px h-8 bg-zinc-800" />
@@ -249,7 +249,7 @@ export default function MemoryMatrixPage() {
             >
               <div className="p-6 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container/50">
                 <h3 className="font-bold flex items-center gap-2">
-                  <Cpu className="w-5 h-5 text-indigo-400" />
+                  <Cpu className="w-5 h-5 text-zinc-400" />
                   Vector Deep Inspection
                 </h3>
                 <button onClick={() => setSelectedVector(null)} className="p-2 hover:bg-surface-container rounded-lg transition-colors">
