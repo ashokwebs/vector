@@ -65,23 +65,47 @@ export default function TelemetryPage() {
       </div>
 
       <div className="relative z-10 flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6 min-h-0">
-        {/* Radar / Globe Simulation Box */}
-        <div className="lg:col-span-2 bg-black/60 border border-zinc-800 rounded-xl overflow-hidden relative flex items-center justify-center shadow-inner shadow-black/50">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.05)_0%,transparent_70%)]" />
-          <div className="w-[300px] h-[300px] rounded-full border border-emerald-500/30 relative flex items-center justify-center animate-[spin_10s_linear_infinite]">
-            <div className="w-[200px] h-[200px] rounded-full border border-emerald-500/20" />
-            <div className="w-[100px] h-[100px] rounded-full border border-emerald-500/10" />
-            <div className="absolute top-1/2 left-0 w-full h-px bg-emerald-500/30" />
-            <div className="absolute top-0 left-1/2 w-px h-full bg-emerald-500/30" />
-            
-            {/* Blips */}
-            <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-emerald-400 rounded-full shadow-[0_0_10px_#34d399] animate-pulse" />
-            <div className="absolute bottom-1/3 right-1/4 w-2 h-2 bg-emerald-400 rounded-full shadow-[0_0_10px_#34d399] animate-pulse" style={{ animationDelay: '0.5s' }} />
-            <div className="absolute top-1/2 right-1/8 w-1.5 h-1.5 bg-indigo-400 rounded-full shadow-[0_0_10px_#818cf8] animate-pulse" />
+        {/* Resource Allocation Matrix */}
+        <div className="lg:col-span-2 bg-zinc-900/40 border border-zinc-800 rounded-xl overflow-hidden relative shadow-inner shadow-black/50 p-6 flex flex-col justify-between backdrop-blur-sm">
+          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
+          
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981] animate-pulse" />
+              <span className="text-zinc-300 text-xs font-bold tracking-widest uppercase">Global Cluster Topology</span>
+            </div>
+            <span className="text-zinc-500 text-[10px] font-mono border border-zinc-800 px-2 py-1 rounded bg-black/40">US-EAST-1 // EU-WEST-2</span>
           </div>
-          <div className="absolute top-4 left-4 flex items-center gap-2 text-emerald-500/70 text-xs">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-            RADAR ACTIVE
+
+          <div className="space-y-5 flex-1">
+            {[
+              { name: "NEXUS CORE", usage: 78, color: "bg-emerald-500" },
+              { name: "VANGUARD EDGE", usage: 42, color: "bg-emerald-500" },
+              { name: "LEDGER DB", usage: 91, color: "bg-amber-500" },
+              { name: "PRISM ORCHESTRATOR", usage: 64, color: "bg-emerald-500" },
+              { name: "ATLAS CDN", usage: 28, color: "bg-emerald-500" },
+            ].map((node, i) => (
+              <div key={i} className="flex flex-col gap-2">
+                <div className="flex justify-between items-end">
+                  <span className="text-xs text-zinc-400 font-mono tracking-wider">{node.name}</span>
+                  <span className="text-[10px] text-zinc-500 font-mono">{node.usage}% ALLOCATED</span>
+                </div>
+                <div className="w-full h-1.5 bg-black rounded-full overflow-hidden border border-zinc-800/50">
+                  <motion.div 
+                    initial={{ width: 0 }} 
+                    animate={{ width: `${node.usage + Math.random() * 5 - 2}%` }} 
+                    transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+                    className={`h-full ${node.color} shadow-[0_0_8px_currentColor] opacity-80`}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="mt-8 pt-4 border-t border-zinc-800/50 flex justify-between items-center text-[10px] text-zinc-500 font-mono tracking-widest">
+            <span>UPTIME: 99.999%</span>
+            <span>ENCRYPTION: AES-256</span>
+            <span>NODES: 1,402</span>
           </div>
         </div>
 
