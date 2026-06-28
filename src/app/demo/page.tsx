@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, Square, FastForward, RotateCcw, LayoutDashboard, Globe, Shield, Rocket } from "lucide-react";
 import Link from "next/link";
@@ -18,6 +18,17 @@ export default function DemoPage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [events, setEvents] = useState<DemoEvent[]>([]);
   const [demoState, setDemoState] = useState<DemoState>('idle');
+  const [currentLatency, setCurrentLatency] = useState(12.4);
+  
+  // Randomize global latency
+  useEffect(() => {
+    if (!isPlaying) return;
+    const interval = setInterval(() => {
+      // Randomize between 10.0 and 25.0 ms for the overlay metric (similar to what was "12.4ms")
+      setCurrentLatency(Number((Math.random() * 15 + 10).toFixed(1)));
+    }, 500);
+    return () => clearInterval(interval);
+  }, [isPlaying]);
   
   const handleEvent = (event: DemoEvent) => {
     setEvents(prev => [...prev, event]);
@@ -134,7 +145,7 @@ export default function DemoPage() {
               <div className="w-px h-10 bg-outline-variant/30" />
               <div>
                 <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Edge Compute Latency</p>
-                <p className="text-xl font-black text-zinc-200 mt-0.5 tracking-tight">{isPlaying ? '12.4ms' : '--'}</p>
+                <p className="text-xl font-black text-zinc-200 mt-0.5 tracking-tight">{isPlaying ? `${currentLatency}ms` : '--'}</p>
               </div>
               <div className="w-px h-10 bg-outline-variant/30" />
               <div>
@@ -152,7 +163,11 @@ export default function DemoPage() {
               <h3 className="text-sm font-bold text-on-surface">Live Orchestration Feed</h3>
             </div>
             <div className="flex-1 overflow-hidden p-2 bg-black">
-              <AicooLiveFeed active={isPlaying && demoState !== 'completed'} speedMs={250} />
+              <AicooLiveFeed 
+                active={isPlaying && demoState !== 'completed'} 
+                isCompleted={demoState === 'completed'}
+                speedMs={250} 
+              />
             </div>
           </div>
           

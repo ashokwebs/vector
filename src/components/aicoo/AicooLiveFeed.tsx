@@ -22,8 +22,9 @@ const ICONS: Record<string, React.ReactNode> = {
   default: <Network className="w-4 h-4" />
 };
 
-export function AicooLiveFeed({ active = true, speedMs = 300 }: { active?: boolean, speedMs?: number }) {
+export function AicooLiveFeed({ active = true, isCompleted = false, speedMs = 300 }: { active?: boolean, isCompleted?: boolean, speedMs?: number }) {
   const [messages, setMessages] = useState<AicooMessage[]>([]);
+  const [currentLatency, setCurrentLatency] = useState(speedMs);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // A hardcoded but highly dynamic looking script that cycles for the hackathon demo
@@ -45,6 +46,9 @@ export function AicooLiveFeed({ active = true, speedMs = 300 }: { active?: boole
     
     let index = 0;
     const interval = setInterval(() => {
+      // Randomize latency between 250ms and 1500ms
+      setCurrentLatency(Math.floor(Math.random() * 1250) + 250);
+
       const scriptItem = DYNAMIC_SCRIPT[index % DYNAMIC_SCRIPT.length];
       
       const newMsg: AicooMessage = {
@@ -69,6 +73,33 @@ export function AicooLiveFeed({ active = true, speedMs = 300 }: { active?: boole
   }, [active, speedMs]);
 
   useEffect(() => {
+    if (isCompleted) {
+      setTimeout(() => {
+        setMessages(prev => [
+          ...prev, 
+          {
+            id: "final-1",
+            from: "Prism",
+            to: "System",
+            action: "HALT_ORCHESTRATION",
+            payload: "All Executive Council tasks completed successfully. Synthesizing final artifacts.",
+            status: "success"
+          },
+          {
+            id: "final-2",
+            from: "System",
+            to: "Aicoo",
+            action: "SYNC_COMPLETE",
+            payload: "Vectors successfully embedded in AICOO network. Session closed.",
+            status: "success"
+          }
+        ]);
+        setCurrentLatency(0);
+      }, 500);
+    }
+  }, [isCompleted]);
+
+  useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
     }
@@ -82,8 +113,12 @@ export function AicooLiveFeed({ active = true, speedMs = 300 }: { active?: boole
           <span className="font-semibold tracking-wider uppercase">Aicoo Live Network</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="flex h-2 w-2 rounded-full bg-zinc-400 animate-ping" />
-          <span className="text-zinc-500">{speedMs}ms latency</span>
+          {active ? (
+            <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
+          ) : (
+            <span className="flex h-2 w-2 rounded-full bg-zinc-600" />
+          )}
+          <span className="text-zinc-500">{currentLatency}ms latency</span>
         </div>
       </div>
       
