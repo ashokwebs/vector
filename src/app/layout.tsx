@@ -4,6 +4,8 @@ import "./globals.css";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { TopNav } from "@/components/layout/TopNav";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { CommandPalette } from "@/components/layout/CommandPalette";
+import { BootSequence } from "@/components/layout/BootSequence";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -36,6 +38,8 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning className={`${inter.variable} ${geistMono.variable} font-sans antialiased bg-background text-foreground min-h-screen flex flex-col md:flex-row overflow-x-hidden`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+          <BootSequence />
+          <CommandPalette />
           <Sidebar />
           <div className="flex-1 w-full md:ml-64 relative flex flex-col min-w-0 min-h-screen">
             <TopNav />

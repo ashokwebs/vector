@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { LayoutDashboard, FolderOpen, Bot, LineChart, CreditCard, Network, History, Settings, X, Cpu, Sparkles, Zap, Database, Globe, Play, GitBranch } from "lucide-react";
+import { LayoutDashboard, FolderOpen, Bot, LineChart, CreditCard, Network, History, Settings, X, Cpu, Sparkles, Zap, Database, Globe, Play, GitBranch, MessageSquare } from "lucide-react";
+import { clsx } from "clsx";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -107,21 +108,47 @@ export function Sidebar() {
       </div>
 
       {/* Version & User Profile */}
-      <div className="mt-auto pt-4 border-t border-outline-variant/30 space-y-3">
-        <div className="flex items-center gap-3 px-3 py-3 bg-surface-container/50 rounded-xl border border-outline-variant/30 hover:bg-surface-container hover:border-outline-variant/60 transition-all cursor-pointer group">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-zinc-400 to-zinc-950 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-black/15 relative border border-zinc-600/50">
-            <span className="group-hover:hidden text-xs">CR</span>
-            <Settings className="w-4 h-4 hidden group-hover:block" />
-            <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-zinc-800 rounded-full border-2 border-surface" />
+      <div className="shrink-0 p-4 border-t border-outline-variant/30 flex flex-col gap-3">
+        <Link 
+          href="/settings"
+          className={clsx(
+            "flex items-center gap-3 px-3 py-2 rounded-xl transition-all font-medium text-sm w-full",
+            pathname === "/settings" 
+              ? "bg-surface-container-high text-on-surface shadow-sm" 
+              : "text-on-surface-variant hover:bg-surface-container hover:text-on-surface"
+          )}
+        >
+          <Settings className="w-5 h-5 shrink-0" />
+          Settings
+        </Link>
+        <Link 
+          href="/feedback"
+          className={clsx(
+            "flex items-center gap-3 px-3 py-2 rounded-xl transition-all font-medium text-sm w-full",
+            pathname === "/feedback" 
+              ? "bg-surface-container-high text-on-surface shadow-sm" 
+              : "text-on-surface-variant hover:bg-surface-container hover:text-on-surface"
+          )}
+        >
+          <MessageSquare className="w-5 h-5 shrink-0" />
+          Feedback
+        </Link>
+
+        {/* User Profile Footer */}
+        <div className="mt-2 pt-4 border-t border-outline-variant/20 flex items-center gap-3 px-2">
+          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-zinc-400 to-zinc-950 border border-zinc-600/50 flex items-center justify-center text-zinc-200 font-bold text-sm shrink-0 shadow-inner">
+            CR
           </div>
-          <div className="flex-1 overflow-hidden">
-            <h4 className="text-sm font-semibold text-on-surface truncate">Crayon Admin</h4>
-            <p className="text-[10px] text-on-surface-variant/60 truncate">admin@crayon.com</p>
+          <div className="flex flex-col min-w-0">
+            <span className="text-sm font-bold text-on-surface truncate">Admin</span>
+            <span className="text-[10px] text-on-surface-variant truncate font-mono">Team OSPRED • Ashok P</span>
           </div>
         </div>
-
-        <div className="px-3 py-1.5 text-center">
-          <span className="text-[9px] font-medium text-on-surface-variant/30 tracking-widest uppercase">Crayon v2.0 • 19 Agents • Aicoo</span>
+        
+        <div className="flex items-center justify-center gap-4 mt-2 text-[10px] text-on-surface-variant/50 font-medium">
+          <Link href="/privacy" className="hover:text-on-surface-variant transition-colors">Privacy</Link>
+          <Link href="/cookie" className="hover:text-on-surface-variant transition-colors">Cookies</Link>
+          <span>v2.4.1</span>
         </div>
       </div>
     </>

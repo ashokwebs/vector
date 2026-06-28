@@ -1,20 +1,21 @@
 <div align="center">
   <img src="./assets/logo.png" alt="Crayon Logo" width="120" />
-  <h1>Crayon AI Command Center</h1>
-  <p>Your Autonomous Digital C-Suite.</p>
+  <h1>Crayon OS</h1>
+  <p>The Autonomous Enterprise Command Center.</p>
   <p>
-    <a href="https://crayon-ai.vercel.app"><img src="https://img.shields.io/badge/Deploy_to-Vercel-black?style=flat-square&logo=vercel" alt="Deploy to Vercel"></a>
+    <a href="https://crayon-os.vercel.app"><img src="https://img.shields.io/badge/Deploy_to-Vercel-black?style=flat-square&logo=vercel" alt="Deploy to Vercel"></a>
     <img src="https://img.shields.io/badge/Next.js-16.2.7-black?style=flat-square&logo=next.js" alt="Next.js">
     <a href="https://aicoo.dev"><img src="https://aicoo.dev/badge-made-with-aicoo-dark.svg" alt="Made with Aicoo" height="20"></a>
     <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License">
   </p>
+  <p>Engineered by <strong>Team OSPRED (Ashok P)</strong></p>
 </div>
 
 ---
 
-**Crayon** is a multi-agent SaaS platform designed to act as your enterprise AI executive council. Whether you need startup ideation, zero-trust cloud architecture, fintech modeling, or viral go-to-market strategies, Crayon puts a full AI C-suite at your fingertips, allowing you to build entire startups in seconds.
+**Crayon OS** is a state-of-the-art multi-agent SaaS platform designed to act as your enterprise AI executive council. Whether you need startup ideation, zero-trust cloud architecture, fintech modeling, or viral go-to-market strategies, Crayon puts a full AI C-suite at your fingertips, allowing you to architect entire tech ecosystems in seconds.
 
-Built with a lightning-fast **Next.js 16** frontend, powered by **Google Gemini 2.5 Flash**, and natively integrated with 🚀 **AICOO PostgreSQL** 🚀 for persistent memory.
+Built with a lightning-fast **Next.js 16** frontend, powered by **Google Gemini 2.5 Flash**, and natively integrated with 🚀 **AICOO PostgreSQL** 🚀 for persistent, secure memory.
 
 ## ✨ The Executive Council
 
@@ -27,7 +28,7 @@ Built with a lightning-fast **Next.js 16** frontend, powered by **Google Gemini 
 ## 🚀 Key Features
 
 - **Instantaneous Cinematic UI**: A premium, glassmorphism dashboard featuring highly reactive agent status cards, buttery-smooth Framer Motion staggered animations, and zero-latency document rendering.
-- **Autonomous Project Architecting**: The AI automatically generates crisp, contextual titles (e.g., "Retro TV SaaS") and builds massive, production-ready markdown documents (Executive Summaries, Architecture Specs, GTM Plans) seamlessly stored in the database.
+- **Autonomous Project Architecting**: The AI automatically generates crisp, contextual titles and builds massive, production-ready markdown documents (Executive Summaries, Architecture Specs, GTM Plans) seamlessly stored in the database.
 - 🧠 **Agent-Native Memory (Powered by AICOO)**: Natively integrated with **AICOO PostgreSQL** utilizing `pgvector`. Chat histories, massive project hierarchies, and contextual embeddings are permanently saved across sessions using AICOO's robust infrastructure.
 - **Zero-Trust Data Scrubbing**: Built for enterprise. Strict context routing ensures that the Finance agent doesn't overwrite the CTO's architecture notes.
 
@@ -44,18 +45,16 @@ Built with a lightning-fast **Next.js 16** frontend, powered by **Google Gemini 
 
 ## 💻 Local Setup
 
-Built to be completely serverless.
+Built to be completely serverless. Engineered for immediate deployment.
 
 ### Prerequisites
 - Node.js 18+
-- PostgreSQL Database (via **AICOO** or Supabase)
+- PostgreSQL Database (via **AICOO**)
 - Google Gemini API Key
 
 ### 1. Installation
-Clone the repository and install the Next.js dependencies:
+Install the required Next.js dependencies:
 ```bash
-git clone https://github.com/a-sweet-debug/the-crayon.git
-cd the-crayon
 npm install
 ```
 
@@ -85,10 +84,9 @@ The platform is completely serverless and fully optimized for zero-configuration
 1. Push your code to a GitHub repository (ensure `.env.local` is listed in your `.gitignore`).
 2. Go to your Vercel Dashboard and click **Add New... > Project**.
 3. Import your GitHub repository.
-4. **Leave the Root Directory completely blank** (`./`). Vercel will automatically detect the Next.js application at the root.
-5. Add your Environment Variables (`POSTGRES_URL` and `GEMINI_API_KEY`).
-6. Click **Deploy**!
+4. Add your Environment Variables (`POSTGRES_URL` and `GEMINI_API_KEY`).
+5. Click **Deploy**!
 
-## 📄 License
+## 📄 License & Team
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is proprietary software developed and engineered entirely by **Team OSPRED (Ashok P)**. All rights reserved.

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FileText, Clock, TrendingUp, CheckCircle2, ChevronRight, File, MoreHorizontal, Download, Share2, Code2, Users, DollarSign, PenTool } from "lucide-react";
+import { FileText, Clock, TrendingUp, CheckCircle2, ChevronRight, File, MoreHorizontal, Download, Share2, Code2, Users, DollarSign, PenTool, Target } from "lucide-react";
 import { motion } from "framer-motion";
 
 const documents = [
@@ -598,7 +598,6 @@ export default function StrategyPage() {
         </div>
       </motion.div>
 
-      </motion.div>
 
       {/* Top Level Telemetry */}
       <motion.div

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Globe, GitBranch, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
@@ -36,11 +36,31 @@ export default function OrgChartPage() {
   const extStartX = (canvasW - (externalOrgs.length - 1) * extSpacing) / 2;
 
   const [activeNode, setActiveNode] = useState<string | null>(null);
+  const [simulatedTraffic, setSimulatedTraffic] = useState<string[]>([]);
+
+  // Simulate real-time network traffic
+  useEffect(() => {
+    const allNodes = [
+      architect.id,
+      ...executives.map(e => e.id),
+      ...directors.map(d => d.id),
+      ...externalOrgs.map(o => o.id)
+    ];
+
+    const interval = setInterval(() => {
+      // Pick 2-4 random nodes to be active
+      const numActive = Math.floor(Math.random() * 3) + 2;
+      const shuffled = [...allNodes].sort(() => 0.5 - Math.random());
+      setSimulatedTraffic(shuffled.slice(0, numActive));
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [architect.id, executives, directors, externalOrgs]);
 
   // Determine if a connection line should be active
   const isLineActive = (from: string, to: string) => {
-    if (!activeNode) return false;
-    return activeNode === from || activeNode === to;
+    if (activeNode) return activeNode === from || activeNode === to;
+    return simulatedTraffic.includes(from) || simulatedTraffic.includes(to);
   };
 
   return (
@@ -52,7 +72,7 @@ export default function OrgChartPage() {
             Organizational Structure
           </h2>
           <p className="text-sm text-on-surface-variant/70 max-w-2xl">
-            Live visualization of your AI executive hierarchy and external Aicoo network connections. Click any node to highlight data flow.
+            Live visualization of your AI executive hierarchy and external Aicoo network connections. Observing simulated real-time orchestration traffic.
           </p>
         </div>
         <div className="flex gap-2">
