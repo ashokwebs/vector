@@ -2,17 +2,35 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Database, Search, ArrowRight } from "lucide-react";
+import { Database, Search, ArrowRight, Zap, X, Code2, ShieldCheck, Target, TrendingUp, Cpu } from "lucide-react";
 
 // Generate mock vector data
 const generateVectors = () => {
   const vectors = [];
-  const topics = ["E-Commerce Strategy", "Zero-Trust Infra", "Fintech Model", "Marketing Loop", "User Auth", "Data Pipeline"];
-  for (let i = 0; i < 200; i++) {
+  const topics = [
+    { name: "E-Commerce Strategy", cluster: "Operations", agent: "Atlas" },
+    { name: "Zero-Trust Infra", cluster: "Security", agent: "Nexus" },
+    { name: "Fintech Model", cluster: "Finance", agent: "Ledger" },
+    { name: "Marketing Loop", cluster: "Growth", agent: "Vanguard" },
+    { name: "User Auth", cluster: "Security", agent: "Nexus" },
+    { name: "Data Pipeline", cluster: "Engineering", agent: "Prism" },
+    { name: "Quantum Resilient Key Exchange", cluster: "Security", agent: "Nexus" },
+    { name: "LLM Context Window Optimization", cluster: "Engineering", agent: "Prism" },
+    { name: "Stripe Webhook Parsing", cluster: "Finance", agent: "Ledger" },
+    { name: "B2B Outreach Sequence", cluster: "Growth", agent: "Vanguard" },
+    { name: "Kubernetes Scaling Pod", cluster: "Operations", agent: "Atlas" },
+    { name: "SOC2 Compliance Matrix", cluster: "Security", agent: "Nexus" },
+  ];
+  
+  for (let i = 0; i < 400; i++) {
+    const t = topics[Math.floor(Math.random() * topics.length)];
     vectors.push({
       id: `0x${Math.random().toString(16).substr(2, 8).toUpperCase()}`,
-      topic: topics[Math.floor(Math.random() * topics.length)],
+      topic: t.name,
+      cluster: t.cluster,
+      agent: t.agent,
       confidence: (Math.random() * 0.4 + 0.6).toFixed(2),
+      bytes: Math.floor(Math.random() * 8000 + 512),
       active: Math.random() > 0.85, // 15% are active/glowing
     });
   }
@@ -22,10 +40,25 @@ const generateVectors = () => {
 const VECTORS = generateVectors();
 
 export default function MemoryMatrixPage() {
+  const [vectors, setVectors] = useState(VECTORS);
   const [hoveredVector, setHoveredVector] = useState<typeof VECTORS[0] | null>(null);
+  const [selectedVector, setSelectedVector] = useState<typeof VECTORS[0] | null>(null);
   const [search, setSearch] = useState("");
 
-  const filteredVectors = VECTORS.filter(v => v.topic.toLowerCase().includes(search.toLowerCase()) || v.id.toLowerCase().includes(search.toLowerCase()));
+  const filteredVectors = vectors.filter(v => v.topic.toLowerCase().includes(search.toLowerCase()) || v.id.toLowerCase().includes(search.toLowerCase()));
+
+  const handleInject = () => {
+    const newVec = {
+      id: `0x${Math.random().toString(16).substr(2, 8).toUpperCase()}`,
+      topic: "LIVE INJECTION PROTOCOL",
+      cluster: "System",
+      agent: "Prism",
+      confidence: "0.99",
+      bytes: 14204,
+      active: true,
+    };
+    setVectors(prev => [newVec, ...prev]);
+  };
 
   return (
     <div className="px-6 md:px-12 pb-8 max-w-[1600px] mx-auto h-[calc(100vh-4rem)] flex flex-col pt-8">
@@ -40,15 +73,24 @@ export default function MemoryMatrixPage() {
           </p>
         </div>
         
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-          <input 
-            type="text" 
-            placeholder="Search vectors..." 
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="bg-surface-container border border-outline-variant/50 rounded-lg pl-9 pr-4 py-2 text-sm focus:outline-none focus:border-indigo-500 w-64 text-on-surface"
-          />
+        <div className="relative flex items-center gap-4">
+          <button 
+            onClick={handleInject}
+            className="flex items-center gap-2 bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 hover:bg-indigo-500/30 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all active:scale-95"
+          >
+            <Zap className="w-4 h-4" />
+            Inject Vector
+          </button>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+            <input 
+              type="text" 
+              placeholder="Search semantic space..." 
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="bg-surface-container border border-outline-variant/50 rounded-lg pl-9 pr-4 py-2 text-sm focus:outline-none focus:border-indigo-500 w-64 text-on-surface transition-colors"
+            />
+          </div>
         </div>
       </motion.div>
 
@@ -65,34 +107,42 @@ export default function MemoryMatrixPage() {
 
         {/* The Matrix */}
         <div className="flex-1 mt-6 overflow-y-auto pr-4 flex flex-wrap content-start gap-1.5 relative z-10" onMouseLeave={() => setHoveredVector(null)}>
-          {filteredVectors.map((v, i) => (
-            <motion.div
-              key={v.id}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: i * 0.002 }} // Fast cascading reveal
-              onMouseEnter={() => setHoveredVector(v)}
-              className={`w-3 h-3 sm:w-4 sm:h-4 rounded-sm cursor-pointer transition-all duration-200 ${
-                v.active 
-                  ? 'bg-indigo-400 shadow-[0_0_8px_#818cf8]' 
-                  : 'bg-zinc-800 hover:bg-indigo-500/50'
-              } ${hoveredVector?.id === v.id ? 'ring-2 ring-white scale-150 z-20 relative' : ''}`}
-            />
-          ))}
+          {filteredVectors.map((v, i) => {
+            const isHovered = hoveredVector?.id === v.id;
+            const isDimmed = hoveredVector && hoveredVector.cluster !== v.cluster;
+            const isSelected = selectedVector?.id === v.id;
+
+            return (
+              <motion.div
+                key={v.id}
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: isDimmed && !isSelected ? 0.2 : 1, scale: 1 }}
+                transition={{ delay: i * 0.001, duration: 0.2 }}
+                onMouseEnter={() => setHoveredVector(v)}
+                onClick={() => setSelectedVector(v)}
+                className={`w-3 h-3 sm:w-4 sm:h-4 rounded-sm cursor-pointer transition-all duration-200 ${
+                  v.topic === "LIVE INJECTION PROTOCOL" ? 'bg-emerald-400 shadow-[0_0_15px_#34d399] animate-pulse z-30' :
+                  v.active 
+                    ? 'bg-indigo-400 shadow-[0_0_8px_#818cf8]' 
+                    : 'bg-zinc-800 hover:bg-indigo-500/50'
+                } ${isHovered || isSelected ? 'ring-2 ring-white scale-150 z-20 relative shadow-[0_0_20px_rgba(255,255,255,0.5)]' : ''}`}
+              />
+            );
+          })}
           {filteredVectors.length === 0 && (
-            <div className="w-full text-center text-zinc-500 mt-20">No matching vectors found in memory space.</div>
+            <div className="w-full text-center text-zinc-500 mt-20 font-mono text-sm">NO SEMANTIC MATCHES DETECTED IN CLUSTER.</div>
           )}
         </div>
       </div>
 
       {/* Floating Context Tooltip */}
       <AnimatePresence>
-        {hoveredVector && (
+        {hoveredVector && !selectedVector && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="absolute bottom-12 left-1/2 -translate-x-1/2 bg-surface/90 backdrop-blur-xl border border-indigo-500/30 rounded-xl p-4 shadow-2xl flex items-center gap-6 min-w-[300px] z-50"
+            className="absolute bottom-12 left-1/2 -translate-x-1/2 bg-surface/90 backdrop-blur-xl border border-indigo-500/30 rounded-xl p-4 shadow-2xl flex items-center gap-6 min-w-[400px] z-50 pointer-events-none"
           >
             <div>
               <p className="text-[10px] text-indigo-400 uppercase font-bold tracking-wider mb-1">Vector Hash</p>
@@ -101,14 +151,83 @@ export default function MemoryMatrixPage() {
             <div className="w-px h-8 bg-zinc-800" />
             <div className="flex-1">
               <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider mb-1">Semantic Context</p>
-              <p className="text-sm font-bold text-white">{hoveredVector.topic}</p>
+              <p className="text-sm font-bold text-white truncate">{hoveredVector.topic}</p>
             </div>
             <div className="w-px h-8 bg-zinc-800" />
             <div>
-              <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider mb-1">Similarity</p>
-              <p className="text-sm font-bold text-emerald-400">{hoveredVector.confidence}</p>
+              <p className="text-[10px] text-emerald-400 uppercase font-bold tracking-wider mb-1">Cluster</p>
+              <p className="text-sm font-bold text-zinc-300">{hoveredVector.cluster}</p>
             </div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Deep Inspection Side Panel */}
+      <AnimatePresence>
+        {selectedVector && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
+              onClick={() => setSelectedVector(null)}
+            />
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed right-0 top-0 bottom-0 w-full max-w-md bg-surface border-l border-outline-variant/50 shadow-2xl z-50 flex flex-col"
+            >
+              <div className="p-6 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container/50">
+                <h3 className="font-bold flex items-center gap-2">
+                  <Cpu className="w-5 h-5 text-indigo-400" />
+                  Vector Deep Inspection
+                </h3>
+                <button onClick={() => setSelectedVector(null)} className="p-2 hover:bg-surface-container rounded-lg transition-colors">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="p-6 flex-1 overflow-y-auto flex flex-col gap-6">
+                
+                {/* Meta */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-4">
+                    <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider mb-1">Origin Agent</p>
+                    <p className="font-bold text-indigo-300">{selectedVector.agent}</p>
+                  </div>
+                  <div className="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-4">
+                    <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider mb-1">Payload Size</p>
+                    <p className="font-bold text-emerald-400">{selectedVector.bytes.toLocaleString()} bytes</p>
+                  </div>
+                </div>
+
+                {/* Context */}
+                <div>
+                  <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider mb-2">Decoded Semantic Context</p>
+                  <div className="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-4 text-sm text-zinc-300 leading-relaxed font-medium">
+                    {selectedVector.topic}
+                  </div>
+                </div>
+
+                {/* Raw Vector */}
+                <div>
+                  <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider mb-2">Raw Embedding Data (First 16 dims)</p>
+                  <div className="bg-black border border-zinc-800 rounded-xl p-4 text-xs font-mono text-zinc-500 leading-relaxed max-h-40 overflow-y-auto shadow-inner shadow-black/50">
+                    [
+                    {Array.from({ length: 16 }).map((_, i) => (
+                      <span key={i} className={i % 3 === 0 ? 'text-indigo-400' : 'text-emerald-400'}>
+                        {(Math.random() * 2 - 1).toFixed(6)}
+                        {i < 15 ? ', ' : ''}
+                      </span>
+                    ))}
+                    ... 1520 more dimensions
+                    ]
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </div>
