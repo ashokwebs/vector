@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Terminal as TerminalIcon, ShieldAlert } from "lucide-react";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface TerminalMessage {
   id: string;
@@ -25,31 +27,82 @@ export default function TerminalPage() {
     }
   }, [messages, isTyping]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isTyping) return;
 
     const userMsg = input.trim();
-    setMessages(prev => [...prev, { id: `msg-${Date.now()}`, role: "user", content: userMsg }]);
+    setMessages(prev => [...prev, { id: `msg-${Date.now()}-u`, role: "user", content: userMsg }]);
     setInput("");
     setIsTyping(true);
+    
+    // Add an empty Prism message to append stream to
+    setMessages(prev => [...prev, { id: `msg-${Date.now()}-p`, role: "prism", content: "" }]);
 
-    // Simulate Prism's reasoning
-    setTimeout(() => {
-      let prismResponse = "I have logged your request into the AICOO vector network. The Executive Council is analyzing the optimal strategy.";
-      
-      const lower = userMsg.toLowerCase();
-      if (lower.includes("/architect") || lower.includes("build") || lower.includes("create")) {
-        prismResponse = "Architecture sequence initiated. I am spinning up Nexus to draft the zero-trust infrastructure, and Vanguard to outline the GTM loop. We will sync the final markdown to your Project Memory.";
-      } else if (lower.includes("budget") || lower.includes("cost") || lower.includes("finance")) {
-        prismResponse = "Routing query to Ledger. He will run a Monte Carlo simulation on projected token consumption and cloud amortizations.";
-      } else if (lower.includes("lockdown") || lower.includes("red alert") || lower.includes("hack")) {
-        prismResponse = "WARNING: Unrecognized security elevation request. Please use the global Command Palette (Cmd+K) to trigger Zero-Trust Protocols.";
+    try {
+      const res = await fetch('/api/orchestrator', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          idea: userMsg, 
+          projectName: "Terminal Secure Shell",
+          conversation_id: null // Terminal always spawns a fresh thread or we could persist it
+        })
+      });
+
+      if (!res.ok) throw new Error(`Server returned ${res.status}`);
+      if (!res.body) throw new Error("No response body received.");
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder("utf-8");
+      let currentResponse = "";
+      let sseBuffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        sseBuffer += decoder.decode(value, { stream: true });
+        const lines = sseBuffer.split('\n');
+        sseBuffer = lines.pop() || "";
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed || !trimmed.startsWith('data: ')) continue;
+          
+          const dataStr = trimmed.slice(6);
+          if (!dataStr) continue;
+
+          try {
+            const payload = JSON.parse(dataStr);
+            if (payload.event === 'content') {
+              currentResponse += payload.data;
+              setMessages(prev => {
+                const newMessages = [...prev];
+                newMessages[newMessages.length - 1] = {
+                  ...newMessages[newMessages.length - 1],
+                  content: currentResponse,
+                };
+                return newMessages;
+              });
+            }
+          } catch {
+            // Ignore malformed chunks
+          }
+        }
       }
-
-      setMessages(prev => [...prev, { id: `msg-${Date.now()}`, role: "prism", content: prismResponse }]);
+    } catch (err: any) {
+      setMessages(prev => {
+        const newMessages = [...prev];
+        newMessages[newMessages.length - 1] = {
+          ...newMessages[newMessages.length - 1],
+          content: `⚠️ CRITICAL ERROR: Connection to Executive Council failed. ${err?.message}`,
+        };
+        return newMessages;
+      });
+    } finally {
       setIsTyping(false);
-    }, 1500 + Math.random() * 1000); // 1.5 to 2.5 seconds
+    }
   };
 
   return (
@@ -97,21 +150,29 @@ export default function TerminalPage() {
                 }`}>
                   {msg.role}
                 </div>
-                <div className={`max-w-[80%] p-4 rounded-xl leading-relaxed text-sm ${
-                  msg.role === 'system' ? 'text-zinc-400 border border-zinc-800/50 italic' :
-                  msg.role === 'prism' ? 'bg-zinc-900/80 text-zinc-300 border border-zinc-800' : 
-                  'bg-indigo-500/20 text-indigo-200 border border-indigo-500/30'
+                <div className={`max-w-[85%] p-4 rounded-xl leading-relaxed text-sm shadow-xl ${
+                  msg.role === 'system' ? 'text-zinc-400 border border-zinc-800/50 italic bg-black/40' :
+                  msg.role === 'prism' ? 'bg-zinc-900/90 text-zinc-300 border border-zinc-700/50 backdrop-blur-md' : 
+                  'bg-emerald-500/10 text-emerald-100 border border-emerald-500/20 backdrop-blur-md'
                 }`}>
-                  {msg.content}
+                  {msg.role === 'prism' ? (
+                    <div className="prose prose-invert prose-sm max-w-none prose-p:leading-relaxed prose-pre:bg-zinc-950 prose-pre:border prose-pre:border-zinc-800 prose-emerald">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {msg.content || "..."}
+                      </ReactMarkdown>
+                    </div>
+                  ) : (
+                    msg.content
+                  )}
                 </div>
               </motion.div>
             ))}
-            {isTyping && (
+            {isTyping && messages[messages.length - 1]?.role !== 'prism' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-start">
                 <div className="text-xs mb-1 uppercase tracking-wider font-bold text-emerald-500">prism</div>
-                <div className="max-w-[80%] p-4 rounded-xl bg-zinc-900/80 text-zinc-300 border border-zinc-800 flex items-center gap-2">
+                <div className="max-w-[80%] p-4 rounded-xl bg-zinc-900/80 text-zinc-300 border border-zinc-800 flex items-center gap-3">
                   <div className="w-2 h-4 bg-emerald-500 animate-pulse" />
-                  <span className="text-zinc-500 text-xs animate-pulse">Synthesizing vectors...</span>
+                  <span className="text-zinc-500 text-xs animate-pulse font-mono tracking-widest uppercase">AICOO Network processing request...</span>
                 </div>
               </motion.div>
             )}
