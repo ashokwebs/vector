@@ -14,7 +14,7 @@
 
 **Crayon** is a multi-agent SaaS platform designed to act as your enterprise AI executive council. Whether you need startup ideation, zero-trust cloud architecture, fintech modeling, or viral go-to-market strategies, Crayon puts a full AI C-suite at your fingertips, allowing you to build entire startups in seconds.
 
-Built with a lightning-fast **Next.js 16** frontend, powered by **Google Gemini 2.5 Flash**, and natively integrated with **Aicoo PostgreSQL** for persistent memory.
+Built with a lightning-fast **Next.js 16** frontend, powered by **Google Gemini 2.5 Flash**, and natively integrated with 🚀 **AICOO PostgreSQL** 🚀 for persistent memory.
 
 ## ✨ The Executive Council
 
@@ -28,7 +28,7 @@ Built with a lightning-fast **Next.js 16** frontend, powered by **Google Gemini 
 
 - **Instantaneous Cinematic UI**: A premium, glassmorphism dashboard featuring highly reactive agent status cards, buttery-smooth Framer Motion staggered animations, and zero-latency document rendering.
 - **Autonomous Project Architecting**: The AI automatically generates crisp, contextual titles (e.g., "Retro TV SaaS") and builds massive, production-ready markdown documents (Executive Summaries, Architecture Specs, GTM Plans) seamlessly stored in the database.
-- **Agent-Native Memory (Aicoo)**: Natively integrated with **Aicoo PostgreSQL** utilizing `pgvector`. Chat histories, massive project hierarchies, and contextual embeddings are permanently saved across sessions.
+- 🧠 **Agent-Native Memory (Powered by AICOO)**: Natively integrated with **AICOO PostgreSQL** utilizing `pgvector`. Chat histories, massive project hierarchies, and contextual embeddings are permanently saved across sessions using AICOO's robust infrastructure.
 - **Zero-Trust Data Scrubbing**: Built for enterprise. Strict context routing ensures that the Finance agent doesn't overwrite the CTO's architecture notes.
 
 ## 🛠 Tech Stack
@@ -37,7 +37,7 @@ Built with a lightning-fast **Next.js 16** frontend, powered by **Google Gemini 
 - **Framework**: Next.js 16 (App Router, Turbopack)
 - **Styling**: Tailwind CSS, Framer Motion, Cinematic UI Tokens
 - **AI Engine**: Google Gemini 2.5 Flash (`@google/generative-ai`)
-- **Database & Memory**: **Aicoo PostgreSQL** (pgvector for RAG)
+- **Database & Memory**: 🚀 **AICOO PostgreSQL** 🚀 (pgvector for RAG)
 - **Deployment**: Vercel
 
 ---
@@ -48,7 +48,7 @@ Built to be completely serverless.
 
 ### Prerequisites
 - Node.js 18+
-- PostgreSQL Database (via Aicoo or Supabase)
+- PostgreSQL Database (via **AICOO** or Supabase)
 - Google Gemini API Key
 
 ### 1. Installation

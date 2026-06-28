@@ -10,7 +10,7 @@ In real-time, the agents collaborate to generate massive, production-ready markd
 We architected Crayon to be lightning-fast and visually stunning:
 * **Frontend & UI**: Built with **Next.js 16 (App Router)** and styled using Tailwind CSS and Framer Motion for a premium, glassmorphic, cinematic user experience. 
 * **AI Engine**: Powered by **Google Gemini 2.5 Flash** for deep, multi-agent reasoning. We dynamically inject highly specific system prompts so agents maintain distinct, authoritative personas.
-* **Database & Memory**: We migrated to **Aicoo PostgreSQL** (utilizing `pgvector`), allowing us to permanently store chat history, complex project hierarchies, and semantic context across all user sessions.
+* **Database & Memory**: We migrated to 🚀 **AICOO PostgreSQL** 🚀 (utilizing `pgvector`), allowing us to permanently store chat history, complex project hierarchies, and semantic context across all user sessions using AICOO's highly optimized vector storage.
 * **Orchestration**: A unified Next.js API layer handles the heavy lifting, dispatching tasks to Gemini and intelligently routing the structured JSON outputs directly into the Postgres database.
 
 ## Challenges we ran into
@@ -33,4 +33,4 @@ We are preparing Crayon for enterprise B2B SaaS adoption. Our immediate next ste
 3. **The Agent Marketplace**: Allowing power users to purchase specialized "micro-agents" (e.g., SEO Optimizer, Legal Auditor) as add-ons to expand their virtual C-suite.
 
 ## Built With
-Next.js React TypeScript TailwindCSS Framer-Motion Aicoo PostgreSQL pgvector Google-Gemini Vercel Node.js
+Next.js React TypeScript TailwindCSS Framer-Motion 🚀**AICOO**🚀 PostgreSQL pgvector Google-Gemini Vercel Node.js
