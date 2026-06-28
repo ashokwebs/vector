@@ -98,16 +98,39 @@ export default function TerminalPage() {
       let mockResponse = "";
       const lower = userMsg.toLowerCase();
       
+      const getRandom = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+      
       if (lower.includes("/architect") || lower.includes("build") || lower.includes("create")) {
-        mockResponse = "Architecture sequence initiated.\n\n* **Nexus:** Drafting zero-trust infrastructure.\n* **Vanguard:** Outlining GTM loop.\n\nI will sync the final markdown to your Project Memory when they complete. Anything else?";
+        mockResponse = getRandom([
+          "Architecture sequence initiated.\n\n* **Nexus:** Drafting zero-trust infrastructure.\n* **Vanguard:** Outlining GTM loop.\n\nI will sync the final markdown to your Project Memory when they complete.",
+          "I have allocated computing resources to the Architecture module. Mapping out system design now. Please standby for the blueprint...",
+          "Spinning up the architect pipeline. We are laying down the core foundation for the application. Expect the documentation shortly."
+        ]);
       } else if (lower.includes("budget") || lower.includes("cost") || lower.includes("finance")) {
-        mockResponse = "Routing query to **Ledger**.\n\nHe is currently running a Monte Carlo simulation on projected token consumption and cloud amortizations. Results will be posted to the Finance dashboard.";
+        mockResponse = getRandom([
+          "Routing query to **Ledger**.\n\nHe is currently running a Monte Carlo simulation on projected token consumption and cloud amortizations. Results will be posted to the Finance dashboard.",
+          "Checking the ledger. Burn rate is nominal. I am pinging the Finance node for a detailed breakdown.",
+          "Cost analysis engaged. Ledger is recalculating the token overhead for the last 30 days."
+        ]);
       } else if (lower.includes("lockdown") || lower.includes("red alert") || lower.includes("hack")) {
-        mockResponse = "⚠️ **WARNING: Unrecognized security elevation request.**\n\nPlease use the global Command Palette (`Cmd+K`) to trigger Zero-Trust Protocols manually.";
+        mockResponse = getRandom([
+          "⚠️ **WARNING: Unrecognized security elevation request.**\n\nPlease use the global Command Palette (`Cmd+K`) to trigger Zero-Trust Protocols manually.",
+          "⚠️ **CRITICAL:** Security lockdown requires physical key verification. Access denied.",
+          "⚠️ **ALERT:** Nexus has detected anomalous requests. Please authenticate via the board room."
+        ]);
       } else if (lower.includes("hi") || lower.includes("hello") || lower.includes("hey") || lower.includes("whats up") || lower.includes("what") || lower.includes("who")) {
-        mockResponse = "Greetings. I am **Prism**, Lead Architect of the Crayon OS Executive Council.\n\nI can assist you with system architecture, security lockdowns, or routing complex tasks to other agents. Try typing `/architect next-gen app` or ask about our `budget`.";
+        mockResponse = getRandom([
+          "Greetings. I am **Prism**, Lead Architect of the Crayon OS Executive Council.\n\nI can assist you with system architecture, security lockdowns, or routing complex tasks to other agents. Try typing `/architect next-gen app` or ask about our `budget`.",
+          "Hello there. The Executive Council is online in simulation mode. How can I optimize your workflow today?",
+          "System nominal. I am Prism. Awaiting your architecture directives or orchestration commands.",
+          "Hey. I'm monitoring the active vector nodes. What do you need help with?"
+        ]);
       } else {
-        mockResponse = `Analyzing input: "${userMsg}"\n\nI have logged your request into the AICOO vector network. The Executive Council is currently operating in offline simulation mode, but your query has been cached for when the uplink is restored.`;
+        mockResponse = getRandom([
+          `Analyzing input: "${userMsg}"\n\nI have logged your request into the AICOO vector network. The Executive Council is currently operating in offline simulation mode, but your query has been cached.`,
+          `Processing: "${userMsg}"...\n\nYour query has been added to the local memory matrix. We will evaluate it once the uplink is fully restored.`,
+          `I don't have a direct module for "${userMsg}" in local mode, but I have stored the context. Try asking about architecture or finance.`
+        ]);
       }
       let i = 0;
       let currentMock = "";
