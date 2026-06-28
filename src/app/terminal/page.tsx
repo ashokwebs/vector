@@ -95,8 +95,20 @@ export default function TerminalPage() {
       // If the backend fails (e.g., Python server not running), fallback to a high-fidelity mock stream
       console.warn("Backend unavailable, falling back to local simulation.", err);
       
-      const mockResponse = `The Executive Council backend connection is currently offline. Operating in **Local Simulation Mode**.\n\nHowever, I can still process your request locally:\n* Initiating Zero-Trust Sandbox.\n* Spawning localized vector matrices.\n* Analyzing: "${userMsg}"\n\nHow else would you like to proceed?`;
+      let mockResponse = "";
+      const lower = userMsg.toLowerCase();
       
+      if (lower.includes("/architect") || lower.includes("build") || lower.includes("create")) {
+        mockResponse = "Architecture sequence initiated.\n\n* **Nexus:** Drafting zero-trust infrastructure.\n* **Vanguard:** Outlining GTM loop.\n\nI will sync the final markdown to your Project Memory when they complete. Anything else?";
+      } else if (lower.includes("budget") || lower.includes("cost") || lower.includes("finance")) {
+        mockResponse = "Routing query to **Ledger**.\n\nHe is currently running a Monte Carlo simulation on projected token consumption and cloud amortizations. Results will be posted to the Finance dashboard.";
+      } else if (lower.includes("lockdown") || lower.includes("red alert") || lower.includes("hack")) {
+        mockResponse = "⚠️ **WARNING: Unrecognized security elevation request.**\n\nPlease use the global Command Palette (`Cmd+K`) to trigger Zero-Trust Protocols manually.";
+      } else if (lower.includes("hi") || lower.includes("hello") || lower.includes("hey") || lower.includes("whats up") || lower.includes("what") || lower.includes("who")) {
+        mockResponse = "Greetings. I am **Prism**, Lead Architect of the Crayon OS Executive Council.\n\nI can assist you with system architecture, security lockdowns, or routing complex tasks to other agents. Try typing `/architect next-gen app` or ask about our `budget`.";
+      } else {
+        mockResponse = `Analyzing input: "${userMsg}"\n\nI have logged your request into the AICOO vector network. The Executive Council is currently operating in offline simulation mode, but your query has been cached for when the uplink is restored.`;
+      }
       let i = 0;
       let currentMock = "";
       
